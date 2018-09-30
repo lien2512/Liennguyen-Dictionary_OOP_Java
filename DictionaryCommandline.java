@@ -1,35 +1,56 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.io.IOException;
+public class DictionaryCommandline extends DictionaryManagement{
+    public  void dictionaryBasic()
 
-public class DictionaryCommandline {
-
-    public static Scanner Scan = new Scanner(System.in);
-
-    public static void showAllWords (List<Word> Words) {
-        System.out.printf("%-7s%-20s%-20s\n", "NO", "|English", "|Vietnamese");
-        for (int i = 0; i < Words.size(); i++) {
-        System.out.printf("%-7s%-20s%-20s\n", i+1, "|" + Words.get(i).getWord_target(),
-                "|"  + Words.get(i).getWord_explain());
+    {
+        insertFromCommandline();
+    }
+    public  void  showAllWords()
+    {
+        System.out.printf("%-20s | %-20s | %-20s","NO","ENGLISH","VIETNAMESE");
+        System.out.println();
+        for(int i=0;i<word.size();i++)
+        {
+            System.out.printf("%-20s | %-20s | %-20s",i+1,word.get(i).getWord_target(),word.get(i).getWord_explain());
+            System.out.println();
         }
     }
+    public  void  dictionaryAdvanced() throws IOException {
+        DictionaryCommandline m= new DictionaryCommandline ();
 
-    public static void dictionaryBasic() {
-        int size = Scan.nextInt();
-        List<Word> words = new ArrayList<Word>();
-        DictionaryManagement.insertFromCommandline(words, size);
-        showAllWords(words);
-    }
-
-    public static void dictionaryAdvance() {
-        List<Word> words = new ArrayList<Word>();
-        DictionaryManagement.insertFromFile(words);
-        showAllWords(words);
-        DictionaryManagement.dictionaryLookup(words);
-    }
-
-    public static void main (String[] args) {
+        m.insertFromFile();
         //dictionaryBasic();
-        dictionaryAdvance();
+        //showAllWords() ;
+        //System.out.println(dictionaryLookup());
+
     }
+    public ArrayList<Word> dictionarySearcher() throws IOException
+    {
+        ArrayList<Word> equal = new ArrayList<>();
+        String english = s.next();
+        for(int i=0;i<word.size();i++)
+        {
+            if(Character.toString(english.charAt(0)).equals(Character.toString(word.get(i).getWord_target().charAt(1))))
+            {
+                equal.add(word.get(i));
+            }
+        }
+        return equal;
+    }
+
+    public static void main (String [] args) throws IOException {
+
+        DictionaryCommandline dm= new DictionaryCommandline();
+        dm.dictionaryAdvanced();
+        ArrayList<Word> w= dm.dictionarySearcher();
+        for(int i=0;i<w.size();i++)
+        {
+            System.out.println(w.get(i).getWord_target());
+        }
+
+    }
+
+
 }
