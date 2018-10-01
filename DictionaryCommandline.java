@@ -1,56 +1,62 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.io.IOException;
-public class DictionaryCommandline extends DictionaryManagement{
-    public  void dictionaryBasic()
+import java.util.List;
+import java.util.Scanner;
 
-    {
-        insertFromCommandline();
-    }
-    public  void  showAllWords()
-    {
-        System.out.printf("%-20s | %-20s | %-20s","NO","ENGLISH","VIETNAMESE");
-        System.out.println();
-        for(int i=0;i<word.size();i++)
-        {
-            System.out.printf("%-20s | %-20s | %-20s",i+1,word.get(i).getWord_target(),word.get(i).getWord_explain());
-            System.out.println();
+public class DictionaryCommandline extends DictionaryManagement{
+
+    public Scanner Scan = new Scanner(System.in);
+
+    public void showAllWords () {
+        System.out.printf("%-7s%-20s%-20s\n", "NO", "|English", "|Vietnamese");
+        for (int i = 0; i < Words.size(); i++) {
+        System.out.printf("%-7s%-20s%-20s\n", i+1, "|" + Words.get(i).getWord_target(),
+                "|"  + Words.get(i).getWord_explain());
         }
     }
-    public  void  dictionaryAdvanced() throws IOException {
-        DictionaryCommandline m= new DictionaryCommandline ();
 
-        m.insertFromFile();
-        //dictionaryBasic();
-        //showAllWords() ;
-        //System.out.println(dictionaryLookup());
-
+    public void showAllWords (List<Word> Words) {
+        System.out.printf("%-7s%-20s%-20s\n", "NO", "|English", "|Vietnamese");
+        for (int i = 0; i < Words.size(); i++) {
+            System.out.printf("%-7s%-20s%-20s\n", i+1, "|" +Words.get(i).getWord_target(),
+                    "|"  + Words.get(i).getWord_explain());
+        }
     }
-    public ArrayList<Word> dictionarySearcher() throws IOException
-    {
-        ArrayList<Word> equal = new ArrayList<>();
-        String english = s.next();
-        for(int i=0;i<word.size();i++)
-        {
-            if(Character.toString(english.charAt(0)).equals(Character.toString(word.get(i).getWord_target().charAt(1))))
-            {
-                equal.add(word.get(i));
+
+    public void dictionaryBasic() {
+        insertFromCommandline();
+        addWord();
+        showAllWords();
+    }
+
+    public void dictionaryAdvance() {
+        insertFromFile();
+        showAllWords();
+        addWord();
+        int i = Scan.nextInt();
+        changeWord(i);
+        int d = Scan.nextInt();
+        deleteWord(d);
+        showAllWords(dictionarySearcher());
+        dictionaryLookup();
+        dictionaryExportToFile();
+    }
+
+    public List<Word> dictionarySearcher() {
+        String s = Scan.nextLine();
+        List<Word> Searcher = new ArrayList<Word>();
+        for (int i = 0; i < Words.size(); i++) {
+            if (Words.get(i).getWord_target().startsWith(s)) {
+                Searcher.add(Words.get(i));
             }
         }
-        return equal;
+        return Searcher;
     }
 
-    public static void main (String [] args) throws IOException {
+    public static void main (String[] args) {
 
-        DictionaryCommandline dm= new DictionaryCommandline();
-        dm.dictionaryAdvanced();
-        ArrayList<Word> w= dm.dictionarySearcher();
-        for(int i=0;i<w.size();i++)
-        {
-            System.out.println(w.get(i).getWord_target());
-        }
+        DictionaryCommandline Cmd = new DictionaryCommandline();
 
+        //Cmd.dictionaryBasic();
+        Cmd.dictionaryAdvance();
     }
-
-
 }
