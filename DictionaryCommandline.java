@@ -1,56 +1,96 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.io.IOException;
-public class DictionaryCommandline extends DictionaryManagement{
-    public  void dictionaryBasic()
+import java.util.List;
+import java.util.Scanner;
 
-    {
-        insertFromCommandline();
-    }
-    public  void  showAllWords()
-    {
-        System.out.printf("%-20s | %-20s | %-20s","NO","ENGLISH","VIETNAMESE");
-        System.out.println();
-        for(int i=0;i<word.size();i++)
-        {
-            System.out.printf("%-20s | %-20s | %-20s",i+1,word.get(i).getWord_target(),word.get(i).getWord_explain());
-            System.out.println();
+public class DictionaryCommandline extends DictionaryManagement{
+
+    public Scanner Scan = new Scanner(System.in);
+
+    public void showAllWords () {
+        System.out.printf("%-7s%-20s%-20s\n", "NO", "English", "Vietnamese");
+        for (int i = 0; i < Words.size(); i++) {
+            System.out.printf("%-7s%-20s%-20s\n", i+1, Words.get(i).getWord_target(), Words.get(i).getWord_explain());
         }
     }
-    public  void  dictionaryAdvanced() throws IOException {
-        DictionaryCommandline m= new DictionaryCommandline ();
 
-        m.insertFromFile();
-        //dictionaryBasic();
-        //showAllWords() ;
-        //System.out.println(dictionaryLookup());
-
+    public void showAllWords (List<Word> Words) {
+        System.out.printf("%-7s%-20s%-20s\n", "NO", "English", "Vietnamese");
+        for (int i = 0; i < Words.size(); i++) {
+            System.out.printf("%-7s%-20s%-20s\n", i+1, Words.get(i).getWord_target(), Words.get(i).getWord_explain());
+        }
     }
-    public ArrayList<Word> dictionarySearcher() throws IOException
-    {
-        ArrayList<Word> equal = new ArrayList<>();
-        String english = s.next();
-        for(int i=0;i<word.size();i++)
-        {
-            if(Character.toString(english.charAt(0)).equals(Character.toString(word.get(i).getWord_target().charAt(1))))
-            {
-                equal.add(word.get(i));
+
+    public void dictionaryBasic() {
+        insertFromCommandline();
+        addWord();
+        showAllWords();
+    }
+
+    public void dictionaryAdvance() {
+        insertFromFile();
+        showAllWords();
+        addWord();
+        int i = Scan.nextInt();
+        int d = Scan.nextInt();
+        showAllWords(dictionarySearcher());
+        dictionaryLookup();
+        dictionaryExportToFile();
+    }
+
+    public List<Word> dictionarySearcher() {
+        String s = Scan.nextLine();
+        List<Word> Searcher = new ArrayList<Word>();
+        for (int i = 0; i < Words.size(); i++) {
+            if (Words.get(i).getWord_target().startsWith(s)) {
+                Searcher.add(Words.get(i));
             }
         }
-        return equal;
+        return Searcher;
     }
+    
+    public static void main (String[] argh) {
 
-    public static void main (String [] args) throws IOException {
+        DictionaryCommandline dict = new DictionaryCommandline();
+        dict.insertFromFile();
 
-        DictionaryCommandline dm= new DictionaryCommandline();
-        dm.dictionaryAdvanced();
-        ArrayList<Word> w= dm.dictionarySearcher();
-        for(int i=0;i<w.size();i++)
-        {
-            System.out.println(w.get(i).getWord_target());
+        System.out.println("Chào mừng bạn đến với ứng dụng từ điển Anh - Việt");
+        System.out.println("=================================================");
+        System.out.println("Vui lòng ấn số để chọn chức năng, sau đó ấn Enter");
+        System.out.println("*************************************************");
+        System.out.println("1: Hiện danh sách từ");
+        System.out.println("2: Tra từ");
+        System.out.println("3: Tìm từ trong danh sách");
+        System.out.println("4: Thêm từ");
+        System.out.println("5: Sửa từ");
+        System.out.println("6: Xóa từ");
+        System.out.println("0: Thoát");
+        System.out.println("-------------------------------------------------");
+
+        Scanner scan = new Scanner(System.in);
+
+        while (true) {
+            System.out.print("Chọn chức năng: ");
+            int Choice = scan.nextInt();
+            switch (Choice) {
+                case 0: System.exit(0);
+                break;
+                case 1: dict.showAllWords();
+                break;
+                case 2: dict.dictionaryLookup();
+                break;
+                case 3: dict.showAllWords(dict.dictionarySearcher());
+                break;
+                case 4: dict.addWord();
+                dict.dictionaryExportToFile();
+                break;
+                case 5: dict.changeWord();
+                dict.dictionaryExportToFile();
+                break;
+                case 6: dict.deleteWord();
+                dict.dictionaryExportToFile();
+                break;
+                default: break;
+            }
         }
-
     }
-
-
 }
