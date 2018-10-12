@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class DictionaryCommandline extends DictionaryManagement{
 
@@ -38,6 +36,7 @@ public class DictionaryCommandline extends DictionaryManagement{
     }
 
     public List<Word> dictionarySearcher() {
+        System.out.println("Nhập kí tự:");
         String s = Scan.nextLine();
         List<Word> Searcher = new ArrayList<Word>();
         for (int i = 0; i < Words.size(); i++) {
@@ -47,7 +46,7 @@ public class DictionaryCommandline extends DictionaryManagement{
         }
         return Searcher;
     }
-    
+
     public static void main (String[] argh) {
 
         DictionaryCommandline dict = new DictionaryCommandline();
@@ -69,6 +68,7 @@ public class DictionaryCommandline extends DictionaryManagement{
         Scanner scan = new Scanner(System.in);
 
         while (true) {
+
             System.out.print("Chọn chức năng: ");
             int Choice = scan.nextInt();
             switch (Choice) {

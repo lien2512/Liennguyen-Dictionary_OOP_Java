@@ -51,7 +51,7 @@ public class DictionaryManagement extends Dictionary{
             } else {
                 if (newWord.getWord_target().compareTo(Words.get(i).getWord_target()) > 0
                     && newWord.getWord_target().compareTo(Words.get(i + 1).getWord_target()) < 0) {
-                    Words.add(i, newWord);
+                    Words.add(i+1, newWord);
                     System.out.println("Thêm từ thành công!");
                     return;
                 }
@@ -91,14 +91,12 @@ public class DictionaryManagement extends Dictionary{
     public void dictionaryExportToFile() {
         try {
             FileOutputStream fos = new FileOutputStream("Dictionaries.txt");
-
             OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
             BufferedWriter bw = new BufferedWriter(osw);
             for (Word tu : Words) {
                 String line = tu.getWord_target().trim() + " " + tu.getWord_explain().trim();
                 bw.write(line);
                 bw.newLine();
-
             }
             bw.close();
             osw.close();
