@@ -1,4 +1,6 @@
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class DictionaryCommandline extends DictionaryManagement{
 
@@ -51,46 +53,56 @@ public class DictionaryCommandline extends DictionaryManagement{
 
         DictionaryCommandline dict = new DictionaryCommandline();
         dict.insertFromFile();
-
+        int Choice;
         System.out.println("Chào mừng bạn đến với ứng dụng từ điển Anh - Việt");
         System.out.println("=================================================");
         System.out.println("Vui lòng ấn số để chọn chức năng, sau đó ấn Enter");
-        System.out.println("*************************************************");
-        System.out.println("1: Hiện danh sách từ");
-        System.out.println("2: Tra từ");
-        System.out.println("3: Tìm từ trong danh sách");
-        System.out.println("4: Thêm từ");
-        System.out.println("5: Sửa từ");
-        System.out.println("6: Xóa từ");
-        System.out.println("0: Thoát");
-        System.out.println("-------------------------------------------------");
+        do {
 
-        Scanner scan = new Scanner(System.in);
+            System.out.println("*************************************************");
+            System.out.println("1: Hiện danh sách từ");
+            System.out.println("2: Tra từ");
+            System.out.println("3: Tìm từ trong danh sách");
+            System.out.println("4: Thêm từ");
+            System.out.println("5: Sửa từ");
+            System.out.println("6: Xóa từ");
+            System.out.println("0: Thoát");
+            System.out.println("-------------------------------------------------");
 
-        while (true) {
+            Scanner scan = new Scanner(System.in);
+
 
             System.out.print("Chọn chức năng: ");
-            int Choice = scan.nextInt();
-            switch (Choice) {
-                case 0: System.exit(0);
-                break;
-                case 1: dict.showAllWords();
-                break;
-                case 2: dict.dictionaryLookup();
-                break;
-                case 3: dict.showAllWords(dict.dictionarySearcher());
-                break;
-                case 4: dict.addWord();
-                dict.dictionaryExportToFile();
-                break;
-                case 5: dict.changeWord();
-                dict.dictionaryExportToFile();
-                break;
-                case 6: dict.deleteWord();
-                dict.dictionaryExportToFile();
-                break;
-                default: break;
-            }
-        }
+            Choice = scan.nextInt();
+                switch (Choice) {
+                    case 0:
+                        System.exit(0);
+                        break;
+                    case 1:
+                        dict.showAllWords();
+                        break;
+                    case 2:
+                        dict.dictionaryLookup();
+                        break;
+                    case 3:
+                        dict.showAllWords(dict.dictionarySearcher());
+                        break;
+                    case 4:
+                        dict.addWord();
+                        dict.dictionaryExportToFile();
+                        break;
+                    case 5:
+                        dict.changeWord();
+                        dict.dictionaryExportToFile();
+                        break;
+                    case 6:
+                        dict.deleteWord();
+                        dict.dictionaryExportToFile();
+                        break;
+                    default:
+                        break;
+                }
+
+        } while(Choice>0 && Choice <=6);
     }
 }
