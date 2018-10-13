@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class DictionaryManagement extends Dictionary{
 
     public Scanner Scan = new Scanner(System.in);
-
+    private static final String fileIN = "E://Dictionaries.txt";
     public int binarySearch(String s)
     {
         int mid,fi = 0;
@@ -39,16 +39,32 @@ public class DictionaryManagement extends Dictionary{
         }
     }
 
-    public void insertFromFile() {
-        File file = new File("Dictionaries.txt");
-        try (Scanner sc = new Scanner(file)) {
-            while (sc.hasNext()) {
-                Word newWord = new Word();
-                newWord.setWord_target(sc.next().trim().replace("\ufeff", ""));
-                newWord.setWord_explain(sc.nextLine().trim());
-                Words.add(newWord);
+//    public void insertFromFile() {
+//        File file = new File("E:\\Dictionaries.txt");
+//        try (Scanner sc = new Scanner(file)) {
+//            while (sc.hasNext()) {
+//                Word newWord = new Word();
+//                newWord.setWord_target(sc.next().trim().replace("\ufeff", ""));
+//                newWord.setWord_explain(sc.nextLine().trim());
+//                Words.add(newWord);
+//            }
+//        } catch (Exception e) { }
+//    }
+    public void insertFromFile(){
+        try {
+            File file = new File(fileIN);
+            BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+            String line;
+            /* Đọc từng dòng (line) dữ liệu.
+             Nếu đọc được null nghĩa là kết thúc */
+            while ((line = in.readLine()) != null){
+                Word w = new Word(line);
+                Words.add(w);
             }
-        } catch (Exception e) { }
+            in.close();
+        }
+        catch (Exception e){
+        }
     }
 
     public void dictionaryLookup()
@@ -117,20 +133,34 @@ public class DictionaryManagement extends Dictionary{
         }
     }
 
+//    public void dictionaryExportToFile() {
+//        try {
+//            FileOutputStream fos = new FileOutputStream("E:\\Dictionaries.txt");
+//            OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
+//            BufferedWriter bw = new BufferedWriter(osw);
+//            for (Word tu : Words) {
+//                String line = tu.getWord_target().trim() + " " + tu.getWord_explain().trim();
+//                bw.write(line);
+//                bw.newLine();
+//            }
+//            bw.close();
+//            osw.close();
+//            fos.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
     public void dictionaryExportToFile() {
+        BufferedWriter file = null;
         try {
-            FileOutputStream fos = new FileOutputStream("Dictionaries.txt");
-            OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
-            BufferedWriter bw = new BufferedWriter(osw);
-            for (Word tu : Words) {
-                String line = tu.getWord_target().trim() + " " + tu.getWord_explain().trim();
-                bw.write(line);
-                bw.newLine();
+            file = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileIN), "UTF-8"));
+            for(int i = 0; i < Words.size(); i++) {
+                file.write(Words.get(i).getWord_target() + "\t" + Words.get(i).getWord_explain());
+                file.newLine();
             }
-            bw.close();
-            osw.close();
-            fos.close();
-        } catch (Exception e) {
+            file.close();
+        }
+        catch(IOException e) {
             e.printStackTrace();
         }
     }
