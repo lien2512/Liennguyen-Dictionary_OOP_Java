@@ -1,185 +1,176 @@
 import java.io.*;
-import java.util.Collections;
 import java.util.Scanner;
-import java.util.ArrayList;
 
 public class DictionaryManagement extends Dictionary{
-    private Scanner sc = new Scanner(System.in);
-    //tìm kiếm nhị phân vị trí từ
-    public int brinarySearch(String s)
-    {
-        int mid,fri = 0;
-        int las = word.size() - 1;
 
-
-        while (fri <= las)
-        {
-                mid = fri + (las - fri) / 2;
-                int cp = word.get(mid).compareTo(s);
-
-                if (cp < 0) {
-                    fri = mid + 1;
-                } else if (cp > 0) {
-                    las = mid - 1;
-                } else {
-                    return mid;
-                }
-            }
-            return -1;
-    }
-    //in toàn bộ danh sách
-    public void showAllWord()
+    public Scanner Scan = new Scanner(System.in);
+    public int binarySearch(String s)
     {
-        System.out.printf("%-5s | %-20s | %-20s","NO","ENGLISH","VIETNAMESE");
-        System.out.println();
-        for( int i=0;i<word.size();i++)
+        int mid,fi = 0;
+        int la = Words.size() - 1;
+        while (fi <= la)
         {
-            System.out.printf("%-5s | %-20s | %-20s",i+1,word.get(i).getWord_target(),word.get(i).getWord_explain());
-            System.out.println();
-        }
-    }
-//    //tìm vị trí thêm từ vào từ điển theo đúng thứ tự
-//    public int binaryInsert()
-//    {
-//        String s = sc.nextLine();
-//        int fri = 0;
-//        int las = word.size() - 1;
-//        int mid = fri + las/2;
-//        int temp = word.get(mid).getWord_target().compareTo(s); // so sanh 2 String
-//        while (fri <= las)
-//        {
-//            if ( temp < 0) // tu tai vi tri mid be hon chuoi s
-//            {
-//                las = mid +1;
-//            }
-//            else if ( temp > 0) // tu tai vi tri mid lon hon chuoi s
-//            {
-//                las = mid -1;
-//            }
-//            else return mid;
-//        }
-//        return -1;
-//    }
-//    //thêm từ bàn phím
-    public void insertFromCommandLine()
-    {
-        System.out.println("Thêm từ vào từ điển");
-        System.out.println("Số lượng từ muốn thêm là : ");
-                int n= sc.nextInt();
-                sc.nextLine();
-        for(int i=0;i<n;i++)
-        {
-            System.out.println("Nhập tiếng anh :");
-            String eng = sc.nextLine();
-            System.out.println("Nhập nghĩa : ");
-            String vi = sc.nextLine();
-            int k = brinarySearch(eng);
-            if(k == -1)
+            mid = fi +(la-fi)/2 ;
+            int c = Words.get(mid).getWord_target().compareTo(s);
+            if(c>0)
             {
-                Word a = new Word();
-                a.setWord_target(eng);
-                a.setWord_explain(vi);
-                word.add(a);
-                System.out.println("Đã thêm từ : " + eng + " thành công");
+                la = mid -1 ;
+            }
+            else if(c<0)
+            {
+                fi = mid+1;
             }
             else
             {
-                System.out.println("từ : "+ eng +" đã có trong từ điển" );
+                return mid;
             }
         }
+        return -1;
     }
-    //thêm từ file
-    public void insertFromFile()
-    {
+    public void insertFromCommandline() {
+        int size = Scan.nextInt();
+        for (int i = 0; i < size; i++) {
+            Word newWord = new Word();
+            newWord.setWord_target(Scan.next());
+            newWord.setWord_explain(Scan.nextLine());
+            Words.add(newWord);
+        }
+    }
+
+    public void insertFromFile() {
         File file = new File("E:\\Dictionaries.txt");
-        try (Scanner s = new Scanner(file)) {
-            while (s.hasNext()) {
+        try (Scanner sc = new Scanner(file)) {
+            while (sc.hasNext()) {
                 Word newWord = new Word();
-                newWord.setWord_target(s.next());
-                newWord.setWord_explain(s.nextLine());
-                word.add(newWord);
+                newWord.setWord_target(sc.next().trim());
+                newWord.setWord_explain(sc.nextLine().trim());
+                Words.add(newWord);
             }
         } catch (Exception e) { }
     }
-    //tra từ
+
+//    public void dictionaryLookup() {
+//        System.out.println("Nhập từ muốn dịch:");
+//        String Target = Scan.nextLine();
+//        for (int i = 0; i < Words.size(); i++) {
+//            if (Target.equals(Words.get(i).getWord_target())) {
+//                System.out.println("Nghĩa: " + Words.get(i).getWord_explain().trim());
+//                return;
+//            }
+//        }
+//        System.out.println("Từ không có trong từ điển");
+//    }
+    //sử dung hàm tìm kiếm từ nhị phân
     public void dictionaryLookup()
     {
-        System.out.println("Tra từ");
-        System.out.println("nhập từ cần tra : ");
-        String search = sc.nextLine();
-        int i =  brinarySearch(search);
-        System.out.println(i);
+        System.out.println("Nhập từ cần tra :");
+        String s = Scan.nextLine();
+        int i = binarySearch(s);
         if(i == -1)
         {
-            System.out.println("từ này chưa có trong từ điển");
+            System.out.println("Từ không có trong từ điển");
         }
         else
         {
-            System.out.println(word.get(i).getWord_target()+" | "+ word.get(i).getWord_explain());
+            System.out.println("nghĩa : " + Words.get(i).getWord_explain());
         }
     }
-    //tra một từ trả về một danh sách các từ gợi ý
-    public void dictionarySearcher() {
-        System.out.println("nhập từ cần tra");
-        String s = sc.nextLine();
-        ArrayList<Word> Searcher = new ArrayList<Word>();
-        for (int i = 0; i < word.size(); i++) {
-            if (word.get(i).getWord_target().startsWith(s)) {
-                Searcher.add(word.get(i));
+
+    public void addWord() {
+        System.out.println("Nhập từ và nghĩa của từ muốn thêm:");
+        Word newWord = new Word();
+        newWord.setWord_target(Scan.next().trim());
+        newWord.setWord_explain(Scan.nextLine().trim());
+        for (int i = 0; i < Words.size() - 1; i++) {
+            if (newWord.getWord_target().equals(Words.get(i).getWord_target())) {
+                System.out.println("Từ đã tồn tại");
+                return;
+            } else {
+                if (newWord.getWord_target().compareTo(Words.get(i).getWord_target()) > 0
+                        && newWord.getWord_target().compareTo(Words.get(i + 1).getWord_target()) < 0) {
+                    Words.add(i+1, newWord);
+                    System.out.println("Thêm từ thành công!");
+                    return;
+                }
             }
         }
-        for (int i=0;i<Searcher.size();i++)
-        {
-            System.out.println(Searcher.get(i).getWord_target() + "  |  " + Searcher.get(i).getWord_explain());
-        }
+        Words.add(newWord);
+        System.out.println("Thêm từ thành công!");
     }
-    //sửa từ
+
+//    public void changeWord() {
+//        System.out.println("Nhập từ muốn sửa:");
+//        String change = Scan.nextLine();
+//        for (int i = 0; i < Words.size(); i++) {
+//            if (change.equals(Words.get(i).getWord_target())) {
+//                System.out.println("Nhập nghĩa mới của từ:");
+//                Words.get(i).setWord_explain(Scan.nextLine());
+//                System.out.println("Sửa từ thành công!");
+//                return;
+//            }
+//        }
+//        System.out.println("Không tồn tại từ trong danh sách");
+//    }
+    //thay đổi từ bằng tìm kiếm nhị phân
     public void changeWord()
     {
-        System.out.println("Sửa từ");
-        System.out.println("Nhập từ muốn sửa ");
-        String s = sc.nextLine();
-        int i = brinarySearch(s);
-        if ( i== -1)
+        System.out.println("Nhập từ muốn sửa : ");
+        String change = Scan.nextLine();
+        int i = binarySearch(change);
+        if(i == -1)
         {
-            System.out.println("Không có từ này trong từ điển");
+            System.out.println("từ này không có trong từ điển !");
         }
         else
         {
             System.out.println("Sửa thành : ");
-            String eng = sc.nextLine();
-            System.out.println("Nhập nghĩa : ");
-            String vi = sc.nextLine();
-            word.get(i).setWord_target(eng);
-            word.get(i).setWord_explain(vi);
-            System.out.println("Sửa thành công");
-        }
-    }
-    // xóa từ
-    public void deleteWord()
-    {
-        System.out.println("Nhập từ muốn xóa :");
-        String s = sc.nextLine();
-        int i = brinarySearch(s);
-        if ( i ==-1)
-        {
-            System.out.println("Không có từ này trong từ điển");
-        }
-        else
-        {
-            word.remove(i);
-            System.out.println("Xóa thành công");
-        }
-    }
-    public void dictionaryExportToFile() {
-        try (FileOutputStream fos = new FileOutputStream(new File("Output.txt"))){
-            ObjectOutputStream oos = new ObjectOutputStream((fos));
-            oos.writeObject(word);
-        } catch (Exception e) {
+
+            String s = Scan.nextLine();
+            Words.get(i).setWord_target(s);
+            System.out.println("nhập nghĩa : ") ;
+            Words.get(i).setWord_explain(Scan.nextLine());
+            System.out.println("Sửa từ thành công !");
         }
     }
 
-
-
+//    public void deleteWord() {
+//        System.out.println("Nhập từ muốn xóa:");
+//        String delete = Scan.nextLine();
+//        for (int i = 0; i < Words.size(); i++) {
+//            if (delete.equals(Words.get(i).getWord_target())) {
+//                Words.remove(i);
+//                System.out.println("Xóa từ thành công!");
+//                return;
+//            }
+//        }
+//        System.out.println("Không tồn tại từ trong danh sách");
+//    }
+public void deleteWord() {
+    System.out.println("Nhập từ muốn xóa:");
+    String delete = Scan.nextLine();
+    int i = binarySearch(delete);
+    if (i == -1) {
+        System.out.println("Không tồn tại từ trong danh sách");
+    } else {
+        Words.remove(i);
+        System.out.println("Xóa từ thành công");
+    }
 }
-
+    public void dictionaryExportToFile() {
+        try {
+            FileOutputStream fos = new FileOutputStream("E:\\Dictionaries.txt");
+            OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
+            BufferedWriter bw = new BufferedWriter(osw);
+            for (Word tu : Words) {
+                String line = tu.getWord_target().trim() + " " + tu.getWord_explain().trim();
+                bw.write(line);
+                bw.newLine();
+            }
+            bw.close();
+            osw.close();
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
