@@ -54,22 +54,21 @@ public class DictionaryCommandline extends DictionaryManagement{
 
         System.out.println("Chào mừng bạn đến với ứng dụng từ điển Anh - Việt");
         System.out.println("=================================================");
-        System.out.println("Vui lòng ấn số để chọn chức năng, sau đó ấn Enter");
-        System.out.println("*************************************************");
-        System.out.println("1: Hiện danh sách từ");
-        System.out.println("2: Tra từ");
-        System.out.println("3: Tìm từ trong danh sách");
-        System.out.println("4: Thêm từ");
-        System.out.println("5: Sửa từ");
-        System.out.println("6: Xóa từ");
-        System.out.println("0: Thoát");
-        System.out.println("-------------------------------------------------");
 
         Scanner scan = new Scanner(System.in);
 
         while (true) {
 
-            System.out.print("Chọn chức năng: ");
+            System.out.println("Vui lòng ấn số để chọn chức năng, sau đó ấn Enter");
+            System.out.println("*************************************************");
+            System.out.println("1: Hiện danh sách từ");
+            System.out.println("2: Tra từ");
+            System.out.println("3: Tìm từ trong danh sách");
+            System.out.println("4: Thêm từ");
+            System.out.println("5: Sửa từ");
+            System.out.println("6: Xóa từ");
+            System.out.println("0: Thoát");
+            System.out.println("-------------------------------------------------");
             int Choice = scan.nextInt();
             switch (Choice) {
                 case 0: System.exit(0);
