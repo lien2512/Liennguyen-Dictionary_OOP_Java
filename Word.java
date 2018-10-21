@@ -4,13 +4,6 @@ public class Word {
 
     private String word_target, word_explain;
 
-    public Word(String s)
-    {
-        String [] a = s.split("\\s", 2);
-        this.word_target = a[0];
-        this.word_explain = a[1];
-    }
-
     public Word(){
     }
 
