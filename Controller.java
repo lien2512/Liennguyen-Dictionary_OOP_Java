@@ -27,8 +27,10 @@ public class Controller implements Initializable {
 
     @FXML private ListView<Word> listView;
     ObservableList<Word> words = FXCollections.observableArrayList();
+    ObservableList<Word> History = FXCollections.observableArrayList();
     @FXML private TextField wordtarget;
     @FXML private WebView webView;
+    @FXML private RadioButton history;
     private WebEngine webEngine;
     @Override
     public void initialize (URL location, ResourceBundle resources) {
@@ -45,6 +47,9 @@ public class Controller implements Initializable {
             @Override
             public void handle(MouseEvent event) {
                 webEngine.loadContent(listView.getSelectionModel().getSelectedItem().getWord_explain());
+                if (!history.isSelected()) {
+                    History.add(listView.getSelectionModel().getSelectedItem());
+                }
             }
         });
 
@@ -53,15 +58,28 @@ public class Controller implements Initializable {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 String target = wordtarget.getText();
                 ObservableList<Word> search = FXCollections.observableArrayList();
-                if (wordtarget.getText().length() > 0) {
-                    for (int i = 0; i < words.size(); i++) {
-                        if (words.get(i).getWord_target().startsWith(target)) {
-                            search.addAll(words.get(i));
+                if (!history.isSelected()) {
+                    if (wordtarget.getText().length() > 0) {
+                        for (int i = 0; i < words.size(); i++) {
+                            if (words.get(i).getWord_target().startsWith(target)) {
+                                search.addAll(words.get(i));
+                            }
                         }
+                        listView.setItems(search);
+                    } else {
+                        listView.setItems(words);
                     }
-                    listView.setItems(search);
                 } else {
-                    listView.setItems(words);
+                    if (wordtarget.getText().length() > 0) {
+                        for (int i = 0; i < History.size(); i++) {
+                            if (History.get(i).getWord_target().startsWith(target)) {
+                                search.addAll(History.get(i));
+                            }
+                        }
+                        listView.setItems(search);
+                    } else {
+                        listView.setItems(History);
+                    }
                 }
             }
         });
@@ -103,6 +121,7 @@ public class Controller implements Initializable {
             } else {
                 webEngine.loadContent(words.get(i).getWord_explain());
                 wordtarget.clear();
+                History.add(0, words.get(i));
             }
         }
     }
@@ -260,7 +279,7 @@ public class Controller implements Initializable {
 
     public void spellus (ActionEvent event) {
 
-        System.setProperty("mbrola.base", "D:\\Downloads\\freetts\\mbrola");
+        System.setProperty("mbrola.base", "mbrola");
         Voice voice;
         String speech = listView.getSelectionModel().getSelectedItem().getWord_target();
         voice = VoiceManager.getInstance().getVoice("mbrola_us1");
@@ -271,7 +290,7 @@ public class Controller implements Initializable {
 
     public void spelluk (ActionEvent event) {
 
-        System.setProperty("mbrola.base", "D:\\Downloads\\freetts\\mbrola");
+        System.setProperty("mbrola.base", "mbrola");
         Voice voice;
         String speech = listView.getSelectionModel().getSelectedItem().getWord_target();
         voice = VoiceManager.getInstance().getVoice("mbrola_us2");
@@ -286,5 +305,13 @@ public class Controller implements Initializable {
         alert.setHeaderText("Từ điển Anh - Việt");
         alert.setContentText("Tác giả: Nguyễn Tuấn Linh - Nguyễn Thị Liên");
         alert.show();
+    }
+
+    public void historyView (ActionEvent event) {
+        if (history.isSelected()) {
+            listView.setItems(History);
+        } else {
+            listView.setItems(words);
+        }
     }
 }

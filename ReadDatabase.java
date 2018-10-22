@@ -33,6 +33,7 @@ public class ReadDatabase {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
     }
 
     public void insert(String word, String info) {
@@ -73,4 +74,5 @@ public class ReadDatabase {
             System.out.println(e.getMessage());
         }
     }
+
 }
