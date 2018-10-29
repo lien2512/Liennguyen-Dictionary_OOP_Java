@@ -13,8 +13,7 @@ public class NullPointerExeptions {
     }
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        String s = sc.nextLine();
+        String s = "adjasfa";
         print(s);
 
     }

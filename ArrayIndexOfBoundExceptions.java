@@ -1,11 +1,9 @@
 import java.util.Scanner;
 
 public class ArrayIndexOfBoundExceptions {
-    public static void PrintArr(int[] arr) throws ArrayIndexOutOfBoundsException
+    public static void PrintArr(int[] arr,int i) throws ArrayIndexOutOfBoundsException
     {
-        int i;
-        Scanner scan = new Scanner(System.in);
-        i= scan.nextInt();
+
 //        try {
 //            System.out.println(arr[i]);
 //        } catch (ArrayIndexOutOfBoundsException e)
@@ -23,6 +21,7 @@ public class ArrayIndexOfBoundExceptions {
     }
     public static void main(String[] args) {
         int[] arr = new int[10];
-        PrintArr(arr);
+        int i = 3;
+        PrintArr(arr,i);
     }
 }
